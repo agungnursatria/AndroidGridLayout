@@ -1,5 +1,6 @@
 package com.example.anb.androidgridlayout;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,12 +17,28 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainGrid = (GridLayout) findViewById(R.id.mainGrid);
+//        mainGrid = (GridLayout) findViewById(R.id.mainGrid);
 
         //Set Event
         //setSingleEvent(mainGrid);
-        setToggleEvent(mainGrid);
+        //setToggleEvent(mainGrid);
+//        setSingleOneTimeForAllEvent(mainGrid);
+    }
 
+    private void setSingleOneTimeForAllEvent(GridLayout mainGrid) {
+        //Loop all child item of main grid
+        for (int i=0;i<mainGrid.getChildCount();i++){
+            final CardView cardView = (CardView) mainGrid.getChildAt(i);
+            final int finalI = i;
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,OneForAllIntentActivity.class);
+                intent.putExtra("info","This is activity from card item index "+finalI);
+                startActivity(intent);
+                }
+            });
+        }
     }
 
     private void setToggleEvent(GridLayout mainGrid) {
@@ -33,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     if (cardView.getCardBackgroundColor().getDefaultColor() == -1){
                         //Change Background color
-                        cardView.setBackgroundColor(Color.parseColor("#FF6F00"));
+                        cardView.setCardBackgroundColor(Color.parseColor("#FF6F00"));
                         Toast.makeText(MainActivity.this, "State : True", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         //Change Background color
-                        cardView.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                        cardView.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                         Toast.makeText(MainActivity.this, "State : False", Toast.LENGTH_SHORT).show();
 
                     }
@@ -55,7 +72,24 @@ public class MainActivity extends AppCompatActivity {
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(MainActivity.this, "Clicked at index " + finalI, Toast.LENGTH_SHORT).show();
+                    if (finalI == 0){
+                        Intent intent = new Intent(MainActivity.this,ActivityOne.class);
+                        startActivity(intent);
+                    } else if (finalI == 1){
+                        Intent intent = new Intent(MainActivity.this,ActivityTwo.class);
+                        startActivity(intent);
+                    } else if (finalI == 2){
+                        Intent intent = new Intent(MainActivity.this,ActivityThree.class);
+                        startActivity(intent);
+                    } else if (finalI == 3){
+                        Intent intent = new Intent(MainActivity.this,ActivityFour.class);
+                        startActivity(intent);
+                    } else if (finalI == 4){
+                        Intent intent = new Intent(MainActivity.this,ActivityFive.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(MainActivity.this, "Please set Activity for this card item", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
